@@ -1,7 +1,6 @@
 import pathlib
 import textwrap
 import google.generativeai as genai
-from googlefinance import getQuotes
 import json
 import os
 from dotenv import load_dotenv, dotenv_values
