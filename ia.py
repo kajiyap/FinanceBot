@@ -66,7 +66,10 @@ def pegarUltimoDividendo(nome: str):
     
     return resposta
 
-model = genai.GenerativeModel('gemini-1.5-flash', tools=[pegarValorCota, pegarNomeEmpresa, pegarUltimoDividendo, pegarPais])
+def panaromaGeral(nome: str):
+    return f"Nome da empresa: {pegarNomeEmpresa(nome)}. País: {pegarPais(nome)}. Último dividendo: {pegarUltimoDividendo(nome)}. Cotação atual: {pegarValorCota(nome)}"
+
+model = genai.GenerativeModel('gemini-1.5-flash', tools=[pegarValorCota, pegarNomeEmpresa, pegarUltimoDividendo, pegarPais, panaromaGeral])
 chat = model.start_chat(enable_automatic_function_calling=True)
 
 def question(pergunta):
