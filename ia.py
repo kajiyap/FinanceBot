@@ -9,23 +9,56 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
-def pegarCotas (nome: str, period: int=1):
+def pegarValorCota(nome: str):
     suffix = ['', '.SA']
     resposta = ''
     for s in suffix:
         try:
             ticker = yf.Ticker(nome+s)
-            resposta = ticker.history(period=f"{period}d")['Close'][0]
-        except IndexError as ex:
+            resposta = ticker.info['currentPrice']
+        except (IndexError, KeyError) as ex:
             resposta = 'Não foi possível encontrar essa sigla.'
     
     return resposta
 
-def multiply(a:float, b:float):
-    """returns a * b."""
-    return a*b
+def pegarNomeEmpresa(nome: str):
+    suffix = ['', '.SA']
+    resposta = ''
+    for s in suffix:
+        try:
+            ticker = yf.Ticker(nome+s)
+            resposta = ticker.info['longName']
+        except (IndexError, KeyError) as ex:
+            resposta = 'Não foi possível encontrar essa sigla.'
+    
+    return resposta
 
-model = genai.GenerativeModel('gemini-1.5-flash', tools=[multiply, pegarCotas])
+def pegarPais(nome: str):
+    suffix = ['', '.SA']
+    resposta = ''
+    for s in suffix:
+        try:
+            ticker = yf.Ticker(nome+s)
+            resposta = ticker.info['country']
+        except (IndexError, KeyError) as ex:
+            resposta = 'Não foi possível encontrar essa sigla.'
+    
+    return resposta
+
+def pegarUltimoDividendo(nome: str):
+    suffix = ['', '.SA']
+    resposta = ''
+    for s in suffix:
+        try:
+            ticker = yf.Ticker(nome+s)
+            resposta = ticker.dividends.array[-1]
+            resposta = resposta
+        except (IndexError, KeyError) as ex:
+            resposta = 'Não foi possível encontrar essa sigla.'
+    
+    return resposta
+
+model = genai.GenerativeModel('gemini-1.5-flash', tools=[pegarValorCota, pegarNomeEmpresa, pegarUltimoDividendo, pegarPais])
 chat = model.start_chat(enable_automatic_function_calling=True)
 
 def question(pergunta):
