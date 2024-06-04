@@ -8,7 +8,7 @@ load_dotenv()
 
 telegramKey = os.getenv("TELEGRAM_API_KEY")
 
-bot = telebot.TeleBot(telegramKey, parse_mode=None)
+bot = telebot.TeleBot(telegramKey, parse_mode='markdown')
 
 @bot.message_handler(func=lambda m: True)
 def echo_all(message):
