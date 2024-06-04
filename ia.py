@@ -16,6 +16,8 @@ def pegarValorCota(nome: str):
         try:
             ticker = yf.Ticker(nome+s)
             resposta = ticker.info['currentPrice']
+            if(resposta != ''):
+                return resposta
         except (IndexError, KeyError) as ex:
             resposta = 'Não foi possível encontrar essa sigla.'
     
@@ -28,6 +30,8 @@ def pegarNomeEmpresa(nome: str):
         try:
             ticker = yf.Ticker(nome+s)
             resposta = ticker.info['longName']
+            if(resposta != ''):
+                return resposta
         except (IndexError, KeyError) as ex:
             resposta = 'Não foi possível encontrar essa sigla.'
     
@@ -40,6 +44,8 @@ def pegarPais(nome: str):
         try:
             ticker = yf.Ticker(nome+s)
             resposta = ticker.info['country']
+            if(resposta != ''):
+                return resposta
         except (IndexError, KeyError) as ex:
             resposta = 'Não foi possível encontrar essa sigla.'
     
@@ -53,6 +59,8 @@ def pegarUltimoDividendo(nome: str):
             ticker = yf.Ticker(nome+s)
             resposta = ticker.dividends.array[-1]
             resposta = resposta
+            if(resposta != ''):
+                return resposta
         except (IndexError, KeyError) as ex:
             resposta = 'Não foi possível encontrar essa sigla.'
     
