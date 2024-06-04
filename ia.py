@@ -1,11 +1,7 @@
-import datetime
-import pandas as pd
-import pandas_datareader
 import yfinance as yf
 import google.generativeai as genai
 import os
-import setuptools
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -14,11 +10,16 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 def pegarCotas (nome: str, period: int=1):
-    ticker = yf.Ticker(nome)
-    try:
-        return ticker.history(period=f"{period}d")['Close'][0]
-    except IndexError as ex:
-        return 'Não foi possível encontrar essa sigla.'
+    suffix = ['', '.SA']
+    resposta = ''
+    for s in suffix:
+        try:
+            ticker = yf.Ticker(nome+s)
+            resposta = ticker.history(period=f"{period}d")['Close'][0]
+        except IndexError as ex:
+            resposta = 'Não foi possível encontrar essa sigla.'
+    
+    return resposta
 
 def multiply(a:float, b:float):
     """returns a * b."""
